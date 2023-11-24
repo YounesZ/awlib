@@ -24,10 +24,10 @@ class AWSimpleImputer(TransformerMixin):
             self.out_col = self.in_columns
 
         # Fit imputer
-        X_i = X.loc[:, self.in_columns]
+        X_i = X.loc[:, self.in_columns].copy()
         self.imputer.fit(X_i, y, **kwargs)
         # Do imputation
-        X, y = self.transform(X_i, y, **kwargs)
+        X, y = self.transform(X, y, **kwargs)
         return X, y
 
     def fit_transform(self, X: pd.DataFrame, y: Optional[pd.DataFrame] = None, **kwargs) -> pd.DataFrame:
@@ -37,7 +37,7 @@ class AWSimpleImputer(TransformerMixin):
         # --- Run transformation
 
         # Do imputation
-        X_i = X.loc[:, self.in_columns]
+        X_i = X.loc[:, self.in_columns].copy()
         X_i = self.imputer.transform(X_i)
 
         # Make output
@@ -66,3 +66,5 @@ if __name__ == '__main__':
     ])
     X_, y_ = pipe.fit_transform(df)
     assert df_['Montant_Ligne_Facture'].isnull().sum() == 0
+
+    print(df_)
