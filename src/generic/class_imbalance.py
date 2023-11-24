@@ -63,3 +63,5 @@ class SMOTE(TransformerMixin):
                       y: np.array = None, **kwargs) -> np.array:
         X, y = self.fit(X, y, **kwargs)
         return X, y
+
+
