@@ -1,5 +1,5 @@
 from sklearn.pipeline import Pipeline
-from src.templates.execution import standard_block_execution
+from .execution import standard_block_execution
 
 
 class AWBPipeline(Pipeline):

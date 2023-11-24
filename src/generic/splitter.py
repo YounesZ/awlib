@@ -1,10 +1,10 @@
+import re
 import numpy as np
 import pandas as pd
 from typing import Union
-
-# Modelling
 from sklearn.base import BaseEstimator, TransformerMixin, ClassifierMixin, RegressorMixin
 from sklearn.model_selection import train_test_split
+from submodules.awpipes.submodules.awlib.src.text.search import match_patterns_to_iterable
 
 
 class DataSplitter(TransformerMixin):
@@ -64,13 +64,13 @@ class AWBFeatureLabelSplitter(TransformerMixin):
     def fit(self, X: Union[pd.DataFrame, np.array],
             y: Union[pd.DataFrame, np.array] = None, **kwargs) -> pd.DataFrame:
 
-        X_ = X
-        if len(self.features) > 0:
-            X_ = X[self.features]
+        # Select features from X
+        FT = match_patterns_to_iterable(self.features, X.columns)
+        X_ = X[FT]
 
-        y_ = X
-        if len(self.labels) > 0:
-            y_ = X[self.labels]
+        # Select labels from X
+        LB = match_patterns_to_iterable(self.labels, X.columns)
+        y_ = X[LB]
         return X_, y_
 
     def transform(self, X: Union[pd.DataFrame, np.array],

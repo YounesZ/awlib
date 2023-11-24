@@ -3,7 +3,7 @@ import numpy as np
 
 from sklearn.base import BaseEstimator, TransformerMixin, ClassifierMixin, RegressorMixin
 from scipy.sparse.csr import csr_matrix
-from submodules.awlib.src.generic.array import replicate_array, shuffle_pair
+from ...submodules.awlib.src.generic.array import replicate_array, shuffle_pair
 
 
 class SMOTE(TransformerMixin):

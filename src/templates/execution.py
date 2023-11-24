@@ -1,7 +1,7 @@
 # Imports
 from copy import deepcopy
 from sklearn.base import TransformerMixin, ClassifierMixin, RegressorMixin, BaseEstimator
-from src.templates.io import get_transformer_outputs
+from .io import get_transformer_outputs
 
 
 def standard_obj_type(obj):

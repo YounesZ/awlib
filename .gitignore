@@ -8,4 +8,5 @@ data/
 # Pycharm
 .idea/
 
-
+# Local files
+__pycache__/

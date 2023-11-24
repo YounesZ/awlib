@@ -2,8 +2,8 @@ import re
 import pandas as pd
 from typing import Optional
 from sklearn.base import BaseEstimator, TransformerMixin, ClassifierMixin, RegressorMixin
-from submodules.awlib.src.text.common import STOPW
-from submodules.awlib.src.text.cleaning import remove_accents, remove_digits, remove_punctuation, remove_stopwords
+from ...submodules.awlib.src.text.common import STOPW
+from ...submodules.awlib.src.text.cleaning import remove_accents, remove_digits, remove_punctuation, remove_stopwords
 
 
 class TextCleaner(TransformerMixin):
