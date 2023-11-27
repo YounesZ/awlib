@@ -3,12 +3,12 @@ import pandas as pd
 from typing import Optional
 from config import TEXT_CLEANING
 from sklearn.base import BaseEstimator, TransformerMixin, ClassifierMixin, RegressorMixin
-from submodules.awlib.src.text.cleaning import remove_accents, remove_digits, remove_punctuation, remove_exact_match
+from submodules.awlib.src.text.cleaning import remove_accents, remove_digits, remove_punctuation, remove_exact_match, stem_string
 
 
 class TextCleaner(TransformerMixin):
 
-    def __init__(self, in_columns=None, out_column='clean', max_digits=1, min_charac=1, remove_stopwords=True, remove_names=True, remove_locations=True, remove_dates=True):
+    def __init__(self, in_columns=None, out_column='clean', max_digits=1, min_charac=1, remove_stopwords=True, remove_names=True, remove_locations=True, remove_dates=True, custom_stemming=True):
         self.in_columns = in_columns
         self.out_column = out_column
         self.max_digits = max_digits
@@ -17,6 +17,7 @@ class TextCleaner(TransformerMixin):
         self.remove_dates = remove_dates
         self.remove_names = remove_names
         self.remove_locations = remove_locations
+        self.custom_stemming = custom_stemming
         TransformerMixin.__init__(self)
 
     def fit(self, X: pd.DataFrame, y: Optional[pd.DataFrame] = None, **kwargs) -> pd.DataFrame:
@@ -57,9 +58,13 @@ class TextCleaner(TransformerMixin):
         if self.remove_locations:
             df[self.out_column] = df[self.out_column].apply(remove_exact_match, args=(TEXT_CLEANING['LOCATIONS'],))
 
-        # 8) Remove digits
+        # 8) Custom stemming
+        if self.custom_stemming:
+            df[self.out_column] = df[self.out_column].apply(stem_string, args=(TEXT_CLEANING['STEMS'],))
+
+        # 9) Remove digits
         df[self.out_column] = df[self.out_column].apply(remove_digits, args=(self.min_charac, self.max_digits,))
-        # 9) Re-join sentences
+        # 10) Re-join sentences
         df[self.out_column] = df[self.out_column].apply(lambda x: ' '.join(x))
         return df, y
 
@@ -81,7 +86,7 @@ if __name__ == '__main__':
 
     DATA_FILE = ['factures_2015.xlsx']
     df = [pd.read_excel("/".join([PATHS['ROOT_DATA'], "Completes", i_])) for i_ in DATA_FILE]
-    df = pd.concat(df, axis=0).reset_index().iloc[:1000]
+    df = pd.concat(df, axis=0).reset_index()
 
     # --- FEATURE ENCODING --- #
     # Apply feature encoding
