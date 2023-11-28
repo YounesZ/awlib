@@ -98,11 +98,16 @@ if __name__ == '__main__':
                       remove_names=True,
                       remove_locations=True,
                       remove_dates=True)
-    X, y = tcl.fit_transform(df)
 
+    #X, y = tcl.fit_transform(df)
+
+    # Get cleaned vocabulary
+    #vocab = list(X['clean_text'].value_counts().keys())
+
+    """"""
     # Encapsulate in a pipeline
     pipe = AWBPipeline([
-        ('Text vectorizer | standard SKlearn Tf-idf', tcl)
+        ('Text cleaner | custom text preprocessing', tcl)
     ])
     X_, y_ = pipe.fit_transform(df)
-    X__, y__ = pipe.transform(df)
+    #X__, y__ = pipe.transform(df)
